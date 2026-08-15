@@ -9,7 +9,6 @@ Vietnam renewable energy faces increasing complexity in grid integration. Decisi
 ```mermaid
 flowchart LR
     S3[S3 Data Landing] --> SP[Snowpipe]
-    SP --> RAW[RAW Tables]
     SPS --> RAW
     RAW --> DT[Dynamic Tables]
     DT --> ML[ML Functions]
