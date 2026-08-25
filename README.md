@@ -118,7 +118,7 @@ Industry research and Snowflake customer outcomes:
 - **Vietnam's peak electricity demand reached 48GW in 2024 — growing 8-10% annually, fastest in ASEAN** — [EVN Annual Report](https://www.evn.com.vn/d6/news/Annual-Report-2024-141-163-2.aspx)
 - **Renewable intermittency causes 20-30% curtailment in Central Vietnam — costing producers $500M annually** — [World Bank Vietnam Energy](https://www.worldbank.org/en/country/vietnam/overview)
 - **Smart grid investment in Vietnam projected at $7B through 2030 for AMI, SCADA, and storage** — [ADB Energy Report](https://www.adb.org/countries/viet-nam/economy)
-- **National Grid ESO (UK) uses Snowflake to balance 30GW of renewable generation in real-time** — [Snowflake Energy](https://www.snowflake.com/en/data-cloud/energy-and-utilities/)
+- **Uniper** (Snowflake customer): built a real-time energy trading and grid analytics platform on Snowflake managing 40GW of generation capacity -- [snowflake.com/customers/uniper](https://www.snowflake.com/en/customers/all-customers/case-study/uniper/)
 
 ## Key Demo Numbers
 
