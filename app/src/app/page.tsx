@@ -35,36 +35,36 @@ export default function HomePage() {
   const executiveCockpit = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Total Generation" value="₫2.4B" status="neutral" />
-        <KPICard title="Grid Curtailment" value="7" status="warning" />
-        <KPICard title="Anomalies Detected" value="3" status="danger" />
-        <KPICard title="Active Plants" value="124" status="neutral" />
+        <KPICard title="RE Penetration" value="28%" status="neutral" />
+        <KPICard title="Grid Frequency" value="50.01 Hz" status="neutral" />
+        <KPICard title="Curtailment (MTD)" value="420 GWh" status="danger" />
+        <KPICard title="Substations" value="847" status="neutral" />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Chart
           data={data?.timeseries || [{ period: 'Loading', value: 0 }]}
           type="line"
           xKey="period"
-          yKeys={[{ key: 'value', name: 'Generation' }]}
-          title="Generation Trend (Weekly)"
+          yKeys={[{ key: 'value', name: 'RE %' }]}
+          title="Renewable Share of Generation (Daily)"
         />
         <Chart
           data={data?.categories || [{ category: 'Loading', count: 0 }]}
           type="bar"
           xKey="category"
-          yKeys={[{ key: 'count', name: 'Count' }]}
-          title="Grid Curtailment by Plant"
+          yKeys={[{ key: 'count', name: 'Stability Score' }]}
+          title="Grid Stability Index"
         />
       </div>
       <DataTable
         columns={[
           { key: 'id', header: '#' },
-          { key: 'name', header: 'Plant' },
-          { key: 'status', header: 'Status' },
-          { key: 'value', header: 'Generation' },
+          { key: 'name', header: 'Zone' },
+          { key: 'status', header: 'Stability' },
+          { key: 'value', header: 'RE %' },
         ]}
         data={data?.entities || []}
-        title="Plant Performance"
+        title="Grid Zone Status"
       />
     </div>
   );
@@ -72,16 +72,16 @@ export default function HomePage() {
   const domainTab1 = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <KPICard title="Efficiency" value="87%" />
-        <KPICard title="Utilization" value="72%" />
-        <KPICard title="Growth Rate" value="+8.4%" />
+        <KPICard title="Peak RE (Today)" value="42%" />
+        <KPICard title="Ramp Rate" value="1.2 GW/hr" />
+        <KPICard title="Storage Online" value="847 MWh" />
       </div>
       <Chart
         data={data?.detail || [{ x: 'Loading', y: 0 }]}
         type="area"
         xKey="x"
-        yKeys={[{ key: 'y', name: 'Index' }]}
-        title="Grid Performance Trend"
+        yKeys={[{ key: 'y', name: 'MW' }]}
+        title="Generation Mix (24-hour)"
         height={400}
       />
     </div>
@@ -94,17 +94,17 @@ export default function HomePage() {
           data={data?.breakdown || [{ label: 'A', value: 30 }, { label: 'B', value: 70 }]}
           type="pie"
           xKey="label"
-          yKeys={[{ key: 'value', name: 'Score' }]}
-          title="Risk Distribution"
+          yKeys={[{ key: 'value', name: 'GWh' }]}
+          title="Curtailment by Cause"
         />
         <ActionMemo
-          persona={{ name: 'Vietnam Operations Lead', role: 'Director of Grid' }}
+          persona={{ name: 'Dr. Nguyen Hoai Nam', role: 'Grid Operations Director' }}
           context={{}}
           onGenerate={async () => ({
             subject: 'Action Required',
             body: 'AI-generated recommendation based on current data patterns and predicted trends.',
             urgency: 'HIGH',
-            actions: ['Review top grid curtailment findings', 'Optimize plant allocation', 'Prepare quarterly grid report'],
+            actions: ['Dispatch battery storage to manage evening ramp (1.8 GW/hr)', 'Request transmission upgrade for Ninh Thuan-Binh Thuan corridor', 'Coordinate with EVN on revised curtailment schedule'],
           })}
         />
       </div>
@@ -116,9 +116,9 @@ export default function HomePage() {
       <AskAI
         title="Ask AI"
         sampleQuestions={[
-          'Which plants have the highest grid curtailment?',
-          'Show generation trend for the last 30 days',
-          'What is the forecast for next quarter's generation?',
+          'What is the maximum RE penetration before curtailment?',
+          'Show grid frequency deviation during high RE periods',
+          'Where should new transmission capacity be prioritized?',
         ]}
         mode="both"
         onSubmit={async (question, mode) => {
@@ -179,7 +179,7 @@ export default function HomePage() {
   const tabs = [
     { id: 'executive-cockpit', label: 'Executive Cockpit', icon: '📊', content: executiveCockpit },
     { id: 'domain-1', label: 'Grid Analytics', icon: '📈', content: domainTab1 },
-    { id: 'domain-2', label: 'Alerts & Actions', icon: '⚡', content: domainTab2 },
+    { id: 'domain-2', label: 'Curtailment', icon: '⚡', content: domainTab2 },
     { id: 'ask-ai', label: 'Ask AI', icon: '🤖', content: askAiTab },
     { id: 'architecture', label: 'Architecture & Data', icon: '🏗️', content: architectureTab },
   ];
