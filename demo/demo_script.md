@@ -21,8 +21,8 @@ Snowflake delivers grid integration intelligence for Vietnamese renewable energy
 | Database | `VIETNAM_RENEWABLE_GRID` |
 | Service | `VIETNAM_RENEWABLE_GRID_APP` |
 | Compute pool | `SEA_DEMOS_VIETNAM_POOL` |
-| Dimension table | `RAW.DOCUMENTS` (20 rows) |
-| Fact table | `RAW.METRICS` (250,000 rows, 90 days) |
+| Dimension table | `RAW.SUBSTATIONS` (20 rows) |
+| Fact table | `RAW.LOAD_READINGS` (250,000 rows, 90 days) |
 | Curated layer | `CURATED.PERFORMANCE_SUMMARY`, `CURATED.TREND_ANALYSIS`, `CURATED.KPI_SUMMARY` |
 | Currency | VND (₫) |
 
@@ -44,8 +44,8 @@ original literal as a fallback, so it still renders if Snowflake is unreachable.
 |---|---|---|
 | RE Penetration | `28%` | average per event |
 | Grid Frequency | `50.01 Hz` | average per event |
-| Curtailment (MTD) | `420 GWh` | total across Documents |
-| Substations | `847` | total across Documents |
+| Curtailment (MTD) | `420 GWh` | total across Substations |
+| Substations | `847` | total across Substations |
 | Peak RE (Today) | `42%` | average per event |
 | Ramp Rate | `1.2 GW/hr` | average per event |
 | Storage Online | `847 MWh` | average per event |
