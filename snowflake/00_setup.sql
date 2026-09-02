@@ -1,16 +1,13 @@
--- ============================================================================
--- Grid Integration
--- Grid Integration for Vietnam - ML.FORECAST and Dynamic Tables power real-time grid integration intelligence for renewable energy in Hanoi (EVN NLD).
--- ============================================================================
-USE ROLE ACCOUNTADMIN;
-CREATE DATABASE IF NOT EXISTS GRID_INTEGRATION;
-CREATE WAREHOUSE IF NOT EXISTS GRID_WH WAREHOUSE_SIZE = 'MEDIUM' AUTO_SUSPEND = 120 AUTO_RESUME = TRUE;
-USE DATABASE GRID_INTEGRATION;
-CREATE SCHEMA IF NOT EXISTS RAW;
-CREATE SCHEMA IF NOT EXISTS CURATED;
-CREATE SCHEMA IF NOT EXISTS ML;
-CREATE SCHEMA IF NOT EXISTS AI;
-CREATE SCHEMA IF NOT EXISTS SEARCH;
-CREATE SCHEMA IF NOT EXISTS APP;
+-- Generated from generator/demo_specs/aws-vietnam-renewable-grid.json
+-- Regenerate with: python3 generator/gen_repo_docs.py aws-vietnam-renewable-grid
+-- This is the schema that is actually deployed for VIETNAM_RENEWABLE_GRID.
 
-USE WAREHOUSE GRID_WH;
+-- VIETNAM_RENEWABLE_GRID  (Grid Integration)
+-- generated from generator/demo_specs/aws-vietnam-renewable-grid.json - do not hand-edit
+CREATE DATABASE IF NOT EXISTS VIETNAM_RENEWABLE_GRID;
+CREATE SCHEMA IF NOT EXISTS VIETNAM_RENEWABLE_GRID.RAW;
+CREATE SCHEMA IF NOT EXISTS VIETNAM_RENEWABLE_GRID.CURATED;
+CREATE SCHEMA IF NOT EXISTS VIETNAM_RENEWABLE_GRID.APP;
+USE DATABASE VIETNAM_RENEWABLE_GRID;
+
+-- 5 real regions; entity names carry their region so the two always agree
