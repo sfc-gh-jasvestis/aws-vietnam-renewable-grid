@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="vietnam"
+            labels={{ entity: 'Zones', event: 'Load Readings', alert: 'Curtailments' }}
             regions={data?.regions}
             markers={[{"label": "Hanoi", "value": "Grid dispatch: North", "color": "blue", "size": "lg"}, {"label": "Da Nang", "value": "Grid dispatch: Central", "color": "blue", "size": "md"}, {"label": "Ho Chi Minh City", "value": "Grid dispatch: South", "color": "blue", "size": "lg"}, {"label": "Ninh Thuan", "value": "RE: 28% curtailed", "color": "red", "size": "md"}]}
             routes={[{"from": "Ninh Thuan", "to": "Ho Chi Minh City", "color": "#EF4444"}]}
@@ -84,8 +85,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: '#' },
           { key: 'name', header: 'Zone' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Stability' },
-          { key: 'value', header: 'RE %' },
+          { key: 'm1', header: 'RE %' },
+          { key: 'm2', header: 'Grid Frequency' },
+          { key: 'm3', header: 'Peak Re Today' },
+          { key: 'events', header: 'Load Readings' },
+          { key: 'alerts', header: 'Curtailments' },
         ]}
         data={data?.entities || []}
         title="Grid Zone Status"
