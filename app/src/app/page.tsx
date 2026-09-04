@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="vietnam"
+            regions={data?.regions}
             markers={[{"label": "Hanoi", "value": "Grid dispatch: North", "color": "blue", "size": "lg"}, {"label": "Da Nang", "value": "Grid dispatch: Central", "color": "blue", "size": "md"}, {"label": "Ho Chi Minh City", "value": "Grid dispatch: South", "color": "blue", "size": "lg"}, {"label": "Ninh Thuan", "value": "RE: 28% curtailed", "color": "red", "size": "md"}]}
             routes={[{"from": "Ninh Thuan", "to": "Ho Chi Minh City", "color": "#EF4444"}]}
             title="Geographic Overview"
