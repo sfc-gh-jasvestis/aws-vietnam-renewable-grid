@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "repo": "aws-vietnam-renewable-grid",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "units": "SCADA samples (one multi-quantity connection-point sample each); protection checks (one protection or power quality check against its setting); busbar voltage deviation in % of nominal; transformer loading in % of rating",
+  "grains": {
+    "RAW.SUBSTATIONS": "one row per fictional grid connection substation (utility solar, onshore wind, nearshore wind, battery storage or solar-storage hybrid connection) in one of 6 Vietnam cities",
+    "RAW.SUBSTATION_DAILY": "one row per substation per day (90 days)",
+    "RAW.EQUIPMENT_READINESS": "one row per substation (inverter spare module, converter spare module, cable joint kit, battery cooling unit or power quality meter snapshot)",
+    "CURATED.PERFORMANCE_SUMMARY": "one row per substation",
+    "CURATED.TREND_ANALYSIS": "one row per day",
+    "CURATED.GRID_EVENT_CAUSES": "one row per root cause",
+    "CURATED.KPI_SUMMARY": "one row per KPI",
+    "ML.GRID_EVENT_RISK_SCORES": "one row per substation (latest day)"
+  },
+  "metrics": {
+    "In-Limit SCADA Samples": "100 * SUM(IN_LIMIT_SAMPLES) / SUM(SCADA_SAMPLES)",
+    "Grid Events": "SUM(GRID_EVENT_COUNT)",
+    "Protection Alarms per 1k Checks": "1000 * SUM(PROTECTION_ALARMS) / SUM(PROTECTION_CHECKS)",
+    "SCADA Samples": "SUM(SCADA_SAMPLES)",
+    "Connection Availability": "100 * SUM(OPERATING_HOURS) / SUM(PLANNED_HOURS)",
+    "Grid Connection Substations": "COUNT(RAW.SUBSTATIONS)",
+    "Protection Spares Readiness": "100 * SUM(LEAST(ON_HAND_QTY, REQUIRED_QTY)) / SUM(REQUIRED_QTY)"
+  },
+  "chart_bindings": {
+    "daily_in_limit": [
+      "CURATED.TREND_ANALYSIS.METRIC_DATE",
+      "IN_LIMIT_PCT"
+    ],
+    "out_of_limit_samples_by_cause": [
+      "CURATED.GRID_EVENT_CAUSES.ROOT_CAUSE",
+      "OUT_OF_LIMIT_SAMPLES"
+    ],
+    "pm_vs_in_limit": [
+      "CURATED.PERFORMANCE_SUMMARY.PM_COMPLIANCE_PCT",
+      "IN_LIMIT_PCT"
+    ],
+    "quicksight_grid_event_risk": [
+      "ENTITY_ID",
+      "MAX(GRID_EVENT_PROB_7D)"
+    ]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation (run_core.py checks this on every build)",
+    "grid_event_risk_model": "Snowflake ML CLASSIFICATION of P(grid event in next 7 days) per substation, evaluated on an out-of-time holdout",
+    "forecast_and_anomaly": "14-day network-wide SCADA sample volume FORECAST; busbar voltage deviation ANOMALY_DETECTION (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.SUBSTATION_SOP_SEARCH over synthetic grid event response SOPs (one per connection type and cause)",
+    "semantic_analytics": "Semantic view APP.GRID_INTEGRATION_ANALYTICS and Cortex Agent APP.GRID_INTEGRATION_AGENT using analyst + search tools",
+    "grounded_ai": "Agent answers return generated SQL and SOP citations; the action memo uses only KPI, grid event, cause and risk rows",
+    "quicksight": "DIRECT_QUERY dashboard (KPIs, daily in-limit SCADA samples, grid events by substation, event risk, IoT message count) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "IoT Core rule -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_TELEMETRY",
+    "notifications": "APP.LIVE_ALARM_ALERT logs new ALARM readings to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "Task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.VN_RENEWABLE_GRID_APP; routes /api/data, /api/ask, /api/agent"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "VIETNAM_RENEWABLE_GRID_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake",
+      "live_telemetry": "APP.SIMULATE_TELEMETRY(n)",
+      "memo": "Cortex AI_COMPLETE (claude-sonnet-4-5)"
+    },
+    "aws": {
+      "database": "VIETNAM_RENEWABLE_GRID_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "live_telemetry": "AWS IoT Core -> S3 -> Snowpipe",
+      "memo": "Amazon Bedrock Claude Sonnet 4.5 via APP.BEDROCK_GENERATE",
+      "capabilities": "see required_capabilities"
+    }
+  }
+}
